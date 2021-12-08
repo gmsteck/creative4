@@ -11,7 +11,7 @@
           <p>{{ park.Size }} acres</p>
         </div>
         <div class="add">
-          <button class="auto" @click="add(park)">Add to Itinerary</button>
+          <button class="auto" @click="upload(park)">Add to Itinerary</button>
         </div>
       </div>
     </div>
@@ -19,16 +19,41 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "ParkList",
   props: {
     parks: Array,
   },
+  data() {
+    return {
+      title: "",
+      file: null,
+      addItem: null,
+      items: [],
+      findTitle: "",
+      findItem: null,
+      description: "",
+    };
+  },
   methods: {
-    add(park) {
+    async upload(park) {
       if (this.$root.$data.parkList.includes(park));
       else {
         this.$root.$data.parkList.push(park);
+      }
+      try {
+          let r2 = await axios.post("/api/parks", {
+            title: park.Name,
+            path: "/images/" + park.Image,
+            description: park.Size,
+            size: park.Size,
+            location: park.State,
+          });
+          this.addItem = r2.data;
+      } catch (error) {
+        console.log(error);
       }
     },
   },

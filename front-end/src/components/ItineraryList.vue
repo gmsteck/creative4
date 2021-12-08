@@ -4,14 +4,14 @@
       <div class="park" v-for="park in parks" :key="park.Name">
         <div>
           <div class="image">
-            <img :src="'/images/' + park.Image" />
+            <img :src="park.path" />
           </div>
-          <h1>{{ park.Name }}</h1>
-          <p>{{ park.State }}</p>
-          <p>{{ park.Size }} acres</p>
+          <h1>{{ park.title }}</h1>
+          <p>{{ park.location }}</p>
+          <p>{{ park.size }} acres</p>
         </div>
         <div class="add">
-          <button class="auto" @click="remove(park)">
+          <button class="auto" @click="deletePark(park)">
             Remove from Itinerary
           </button>
         </div>
@@ -21,14 +21,44 @@
 </template>
 
 <script>
+
+import axios from "axios"
+
 export default {
   name: "ItineraryList",
-  props: {
-    parks: Array,
+  data() {
+    return {
+    parks: []
+    }
   },
+  created() {
+    this.getItems()
+  },
+
   methods: {
-    remove(park) {
+    async getItems() {
+      try {
+        let response = await axios.get("/api/parks");
+        this.parks = response.data;
+        let parkSet = [...new Set(this.parks)]
+        this.parks = Array.from(parkSet)
+        console.log("1")
+        console.log(this.parks)
+        return this.parks
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async deletePark(park) {
       this.$root.$data.parkList.splice(park, 1);
+      try {
+        await axios.delete("/api/parks/" + park._id);
+        this.getItems();
+        console.log(this.$root.$data.parkList)
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
