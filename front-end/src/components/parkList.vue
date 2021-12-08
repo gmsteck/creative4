@@ -49,6 +49,8 @@ export default {
             description: park.Size,
             size: park.Size,
             location: park.State,
+            longitude: park.Longitude,
+            latitude: park.Latitude,
           });
           this.addItem = r2.data;
       } catch (error) {

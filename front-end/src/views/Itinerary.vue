@@ -83,32 +83,33 @@ export default {
     },
     createTree() {
       console.log("function has been called");
+      console.log(this.$root.$data.parkList);
       this.startState = this.searchText;
       let g = new Graph();
       for (let i = 0; i < this.$root.$data.parkList.length; i++) {
-        if (this.$root.$data.parkList[i].Name == this.startState) {
-          g.addNode(this.$root.$data.parkList[i].Name);
+        if (this.$root.$data.parkList[i].title == this.startState) {
+          g.addNode(this.$root.$data.parkList[i].title);
         }
       }
       for (let i = 0; i < this.$root.$data.parkList.length; i++) {
-        if (this.$root.$data.parkList[i].Name != this.startState) {
-          g.addNode(this.$root.$data.parkList[i].Name);
+        if (this.$root.$data.parkList[i].title != this.startState) {
+          g.addNode(this.$root.$data.parkList[i].title);
         }
       }
       for (let i = 0; i < this.$root.$data.parkList.length; i++) {
         for (let j = 0; j < this.$root.$data.parkList.length; j++) {
           if (
-            this.$root.$data.parkList[i].Name !=
-            this.$root.$data.parkList[j].Name
+            this.$root.$data.parkList[i].title !=
+            this.$root.$data.parkList[j].title
           ) {
             g.addEdge(
-              this.$root.$data.parkList[i].Name,
-              this.$root.$data.parkList[j].Name,
+              this.$root.$data.parkList[i].title,
+              this.$root.$data.parkList[j].title,
               this.distance(
-                this.$root.$data.parkList[i].Latitude,
-                this.$root.$data.parkList[j].Latitude,
-                this.$root.$data.parkList[i].Longitude,
-                this.$root.$data.parkList[j].Longitude
+                this.$root.$data.parkList[i].latitude,
+                this.$root.$data.parkList[j].latitude,
+                this.$root.$data.parkList[i].longitude,
+                this.$root.$data.parkList[j].longitude
               )
             );
           }
@@ -116,6 +117,7 @@ export default {
       }
       console.log("prim's algorithm is called");
       this.parkOrder = g.primsMST(this.startState).nodes;
+      console.log(this.parkOrder);
       console.log("prim's algorithm is succeeds");
     },
   },

@@ -51,19 +51,16 @@ export default {
         this.parks = response.data;
         let parkSet = [...new Set(this.parks)]
         this.parks = Array.from(parkSet)
-        console.log("1")
-        console.log(this.parks)
+        this.$root.$data.parkList = this.parks;
         return this.parks
       } catch (error) {
         console.log(error);
       }
     },
     async deletePark(park) {
-      this.$root.$data.parkList.splice(park, 1);
       try {
         await axios.delete("/api/parks/" + park._id);
         this.getItems();
-        console.log(this.$root.$data.parkList)
         return true;
       } catch (error) {
         console.log(error);

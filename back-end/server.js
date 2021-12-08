@@ -33,6 +33,8 @@ const parkSchema = new mongoose.Schema({
   description: String,
   size: String,
   location: String,
+  longitude: Number,
+  latitude: Number,
 });
 
 const Park = mongoose.model("Park", parkSchema);
@@ -55,6 +57,8 @@ app.post("/api/parks", async (req, res) => {
     description: req.body.description,
     size: req.body.size,
     location: req.body.location,
+    longitude: req.body.longitude,
+    latitude: req.body.latitude,
   });
   try {
     await park.save();
