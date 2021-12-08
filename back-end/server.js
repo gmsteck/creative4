@@ -29,6 +29,7 @@ app.listen(3000, () => console.log("Server listening on port 3000!"));
 const parkSchema = new mongoose.Schema({
   title: String,
   path: String,
+  notes: String,
   description: String,
   size: String,
   location: String,
@@ -50,6 +51,7 @@ app.post("/api/parks", async (req, res) => {
   const park = new Park({
     title: req.body.title,
     path: req.body.path,
+    notes: req.body.notes,
     description: req.body.description,
     size: req.body.size,
     location: req.body.location,
@@ -91,6 +93,7 @@ app.put("/api/parks/:id", async (req, res) => {
       _id: req.params.id,
     });
     parkToEdit.description = req.body.description;
+    parkToEdit.notes = req.body.notes;
     await parkToEdit.save();
     res.send(parkToEdit);
   } catch (error) {

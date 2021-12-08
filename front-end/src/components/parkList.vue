@@ -33,7 +33,6 @@ export default {
       addItem: null,
       items: [],
       findTitle: "",
-      findItem: null,
       description: "",
     };
   },
