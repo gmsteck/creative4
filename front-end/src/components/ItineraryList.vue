@@ -10,6 +10,14 @@
           <p>{{ park.location }}</p>
           <p>{{ park.size }} acres</p>
         </div>
+        <div>
+          <p>{{park.notes}}</p>
+          <br>
+          <textarea v-model="notes[park._id]" placeholder="itinerary notes" class="edit"></textarea>
+          <br>
+          <button @click="editNotes(park)">Update Park Notes</button>
+          <br><br><br>
+        </div>
         <div class="add">
           <button class="auto" @click="deletePark(park)">
             Remove from Itinerary
@@ -28,7 +36,8 @@ export default {
   name: "ItineraryList",
   data() {
     return {
-    parks: []
+    parks: [],
+    notes: []
     }
   },
   created() {
@@ -55,6 +64,17 @@ export default {
         await axios.delete("/api/parks/" + park._id);
         this.getItems();
         console.log(this.$root.$data.parkList)
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async editNotes(park) {
+      try {
+        await axios.put("/api/parks/" + park._id, {
+          notes: this.notes[park._id]
+        });
+        this.getItems();
         return true;
       } catch (error) {
         console.log(error);
